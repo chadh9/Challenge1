@@ -1,0 +1,12 @@
+MyGoodOldSensor
+
+Fri Apr 10 14:24:46 CEST 2020
+[1.5]
+
+Fri Apr 10 14:24:46 CEST 2020
+[0.7, 1.2, 2.1]
+
+Fri Apr 10 14:24:47 CEST 2020
+[0.7, 1.2]
+
+
