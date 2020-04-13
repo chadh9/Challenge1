@@ -40,31 +40,24 @@ public class WriteAndReadDataSet {
         String filename = "valuesets.txt";
         OutputStream os = null;
         InputStream is = null;
-        int valuesize=values.length;
 
 
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(sensorName).append("\n\n");
-
-
-
-        for (int i=0;i<valuesize; i++) {
-            Date date = new Date(timeStamps[i]);
-
-            stringBuilder.
-                    append(date).
-                    append("\n").
-                    append(Arrays.toString(values[i])).append("\n\n");
-        }
-
-        String filecontent = stringBuilder.toString();
-        byte[] filecontentBytes = filecontent.getBytes();
-        int filelength = filecontentBytes.length;
 
         try {
             os = new FileOutputStream(filename);
-            PrintStream ps = new PrintStream(os);
-            ps.println(filecontent);
+
+            DataOutputStream dataOutputStream = new DataOutputStream(os);
+
+
+            dataOutputStream.writeUTF(sensorName);
+
+            for (int i=0;i<timeStamps.length; i++) {
+                dataOutputStream.writeLong(timeStamps[i]);
+                dataOutputStream.writeInt(values[i].length);
+                for(int j=0;j<values[i].length;j++) {
+                    dataOutputStream.writeFloat(values[i][j]);
+                }
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -78,12 +71,20 @@ public class WriteAndReadDataSet {
 
         try {
             is = new FileInputStream(filename);
-            byte[] inputBytes = new byte[filelength];
-            is.read(inputBytes);
-            String inputStream = new String(inputBytes);
 
-            
-            System.out.println(inputStream);
+            DataInputStream dataInputStream=new DataInputStream(is);
+            System.out.println("Sensorname:");
+            System.out.println(dataInputStream.readUTF());
+
+            while(dataInputStream.available()>0) {
+                System.out.println("\n\nDate: \n" + dataInputStream.readLong());
+                int setsize=dataInputStream.readInt();
+                System.out.println("Measures: ");
+                for(int i=0;i<setsize;i++) {
+
+                    System.out.println(dataInputStream.readFloat());
+                }
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
