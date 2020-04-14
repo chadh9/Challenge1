@@ -3,6 +3,7 @@ package filepersistence;
 import java.io.*;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class WriteAndReadDataSet {
 
@@ -34,19 +35,25 @@ public class WriteAndReadDataSet {
         valueSet[0] = (float) 0.7;
         valueSet[1] = (float) 1.2;
 
-        // write three data set into a file
-        // TODO: your job. use DataOutputStream / FileOutputStream
+
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 
         String filename = "valuesets.txt";
-        OutputStream os = null;
-        InputStream is = null;
+
 
         registerData registerData = new registerData(filename);
+
 
         registerData.registerSensor(sensorName);
         registerData.registerValues(values[0]);
         registerData.registerValues(values[1]);
         registerData.registerValues(values[2]);
+
+        registerData.registerValues(new float[]{(float)1.2, (float) 1.1,(float) 1.1,(float) 1.1,(float) 1.1,(float) 1.1,(float) 1.1});
+
         registerData.close();
 
 
@@ -54,8 +61,6 @@ public class WriteAndReadDataSet {
         readDataFromFile.read(filename);
 
 
-        // read data from file and print to System.out
-        // TODO: your job use DataInputStream / FileInputStream
 
 
     }
