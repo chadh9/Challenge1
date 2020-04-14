@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class WriteAndReadDataSet {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         // three example data sets
         String sensorName = "MyGoodOldSensor"; // does not change
 
@@ -41,53 +41,22 @@ public class WriteAndReadDataSet {
         OutputStream os = null;
         InputStream is = null;
 
+        registerData registerData = new registerData(filename);
+
+        registerData.registerSensor(sensorName);
+        registerData.registerValues(values[0]);
+        registerData.registerValues(values[1]);
+        registerData.registerValues(values[2]);
+        registerData.close();
 
 
-        try {
-            os = new FileOutputStream(filename);
-
-            DataOutputStream dataOutputStream = new DataOutputStream(os);
-
-
-            dataOutputStream.writeUTF(sensorName);
-
-            for (int i=0;i<timeStamps.length; i++) {
-                dataOutputStream.writeLong(timeStamps[i]);
-                dataOutputStream.writeInt(values[i].length);
-                for(int j=0;j<values[i].length;j++) {
-                    dataOutputStream.writeFloat(values[i][j]);
-                }
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        readDataFromFile readDataFromFile = new readDataFromFile();
+        readDataFromFile.read(filename);
 
 
         // read data from file and print to System.out
         // TODO: your job use DataInputStream / FileInputStream
 
 
-        try {
-            is = new FileInputStream(filename);
-
-            DataInputStream dataInputStream=new DataInputStream(is);
-            System.out.println("Sensorname:");
-            System.out.println(dataInputStream.readUTF());
-
-            while(dataInputStream.available()>0) {
-                System.out.println("\n\nDate: \n" + dataInputStream.readLong());
-                int setsize=dataInputStream.readInt();
-                System.out.println("Measures: ");
-                for(int i=0;i<setsize;i++) {
-
-                    System.out.println(dataInputStream.readFloat());
-                }
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
